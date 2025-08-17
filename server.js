@@ -15,7 +15,7 @@ const io = new Server(server, {
 });
 
 // OpenAI API key (or use HuggingFace)
-const OPENAI_API_KEY='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';
+const OPENAI_API_KEY='openai Api';
 io.on('connection', (socket) => {
     console.log('User connected');
 
@@ -71,4 +71,5 @@ io.on('connection', (socket) => {
 
 server.listen(3001, () => {
     console.log('Server running on http://localhost:3001');
+
 });
