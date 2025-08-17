@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Donor-Receiver Chat</title>
+</head>
+<body>
+    <h2>Chat</h2>
+    <select id="sender">
+        <option value="receiver">Receiver</option>
+        <option value="donor">Donor</option>
+    </select>
+    <ul id="messages"></ul>
+    <form id="form">
+        <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <script>
+        const socket = io('http://localhost:3001');
+        const form = document.getElementById('form');
+        const input = document.getElementById('input');
+        const messages = document.getElementById('messages');
+        const sender = document.getElementById('sender');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const msg = input.value;
+            const user = sender.value;
+            if (msg) {
+                socket.emit('chat message', { sender: user, message: msg });
+                addMessage(user, msg);
+                input.value = '';
+            }
+        });
+
+        socket.on('chat message', function(data) {
+            addMessage(data.sender, data.message);
+        });
+
+        function addMessage(user, msg) {
+            const li = document.createElement('li');
+            li.textContent = `${user}: ${msg}`;
+            messages.appendChild(li);
+        }
+    </script>
+</body>
+</html>
